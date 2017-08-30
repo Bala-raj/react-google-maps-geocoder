@@ -15,12 +15,12 @@ class MyComponent extends Component {
 
   componentDidMount() {
     this.geocoder = new window.google.maps.Geocoder();
-    this.renderMap();
+    this.renderMap(this.props.address);
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.address != nextProps.address) {
-      this.renderMap();
+      this.renderMap(nextProps.address);
     }
   }
 
@@ -40,14 +40,14 @@ class MyComponent extends Component {
     this.setState({ isGeocodingError: true });
   }
 
-  renderMap() {
-    this.geocoder.geocode({ address: this.props.address }, this.handleResults.bind(this));
+  renderMap(address) {
+    this.geocoder.geocode({ address: address }, this.handleResults.bind(this));
   }
 
   render() {
     this.state.isGeocodingError ? <p className="bg-danger">Address not found.</p> : <p className="bg-info">{this.state.foundAddress}</p>;
     return (
-      <div className="map" ref={c => (this.mapElement = c)} style={{ height: '600px' }} />
+      <div className="map" ref={c => (this.mapElement = c)} style={{ height: '100%' }} />
     );
   }
 }
