@@ -1,5 +1,5 @@
 
-const INITIAL_MAP_ZOOM_LEVEL = 9;
+const INITIAL_MAP_ZOOM_LEVEL = 6;
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -30,8 +30,13 @@ class MyComponent extends Component {
 
       if (!this.map) {
         this.map = new window.google.maps.Map(this.mapElement, Object.assign({ center: results[0].geometry.location }, this.props.options));
-      } else {
+      } else {        
         this.map.setCenter(results[0].geometry.location);
+        if(results[0].formatted_address.split(',').length > 2) {
+            this.map.setZoom(9);
+        } else {
+            this.map.setZoom(6);
+        }
       }
 
       return;
