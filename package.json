@@ -15,10 +15,9 @@
     "react": "~0.14.8 || ^15.0.0",
     "react-dom": "~0.14.8 || ^15.0.0"
   },
-  "dependencies": {
-    "react": "^15.5.4",
-    "react-cookie": "^1.0.5"
-  },
+  "dependencies": {    
+    "react": "^15.5.4"
+    },
   "devDependencies": {
     "babel-eslint": "^7.2.2",
     "babel-jest": "^19.0.0",

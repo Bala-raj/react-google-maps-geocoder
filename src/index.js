@@ -1,6 +1,3 @@
-
-const INITIAL_MAP_ZOOM_LEVEL = 6;
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
@@ -29,7 +26,8 @@ class MyComponent extends Component {
       this.setState({ isGeocodingError: false });
 
       if (!this.map) {
-        this.map = new window.google.maps.Map(this.mapElement, Object.assign({ center: results[0].geometry.location }, this.props.options));
+        const options = Object.assign({ center: results[0].geometry.location }, this.props.options)
+        this.map = new window.google.maps.Map(this.mapElement, options );
       } else {        
         this.map.setCenter(results[0].geometry.location);
         if(results[0].formatted_address.split(',').length > 2) {
@@ -60,12 +58,6 @@ class MyComponent extends Component {
 MyComponent.propTypes = {
   address: PropTypes.string.isRequired,
   options: PropTypes.object,
-};
-
-MyComponent.defaultProps = {
-  options: {
-    zoom: INITIAL_MAP_ZOOM_LEVEL,
-  },
 };
 
 export default MyComponent;
