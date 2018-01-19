@@ -21,6 +21,10 @@ class MyComponent extends Component {
     }
   }
 
+  getMarker(position) {
+    return new window.google.maps.Marker({ position });
+  }
+
   handleResults(results, status) {
     if (status === window.google.maps.GeocoderStatus.OK) {
       this.setState({ isGeocodingError: false });
@@ -28,13 +32,22 @@ class MyComponent extends Component {
       if (!this.map) {
         const options = Object.assign({ center: results[0].geometry.location }, this.props.options)
         this.map = new window.google.maps.Map(this.mapElement, options );
-      } else {        
+        if(this.props.options.showMarker ) {          
+          this.marker = this.getMarker(results[0].geometry.location);
+          this.marker.setMap(this.map);
+        }
+      } else {
         this.map.setCenter(results[0].geometry.location);
         if(results[0].formatted_address.split(',').length > 2) {
             this.map.setZoom(9);
         } else {
             this.map.setZoom(6);
         }
+        if(this.props.options.showMarker ) {
+          this.marker.setMap(null);
+          this.marker = this.getMarker(results[0].geometry.location);
+          this.marker.setMap(this.map);
+        }        
       }
 
       return;
