@@ -21,8 +21,8 @@ class MyComponent extends Component {
     }
   }
 
-  getMarker(position) {
-    return new window.google.maps.Marker({ position });
+  getMarker(position, icon) {
+    return new window.google.maps.Marker({ position, icon });
   }
 
   handleResults(results, status) {
@@ -33,7 +33,7 @@ class MyComponent extends Component {
         const options = Object.assign({ center: results[0].geometry.location }, this.props.options)
         this.map = new window.google.maps.Map(this.mapElement, options );
         if(this.props.options.showMarker ) {          
-          this.marker = this.getMarker(results[0].geometry.location);
+          this.marker = this.getMarker(results[0].geometry.location, this.props.options.markerIcon);
           this.marker.setMap(this.map);
         }
       } else {
@@ -45,7 +45,7 @@ class MyComponent extends Component {
         }
         if(this.props.options.showMarker ) {
           this.marker.setMap(null);
-          this.marker = this.getMarker(results[0].geometry.location);
+          this.marker = this.getMarker(results[0].geometry.location, this.props.options.markerIcon);
           this.marker.setMap(this.map);
         }        
       }

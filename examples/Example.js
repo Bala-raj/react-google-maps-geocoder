@@ -27,7 +27,7 @@ class Example extends React.Component {
         return (
             <div style={{ height: '600px' }}>
                 <center style={{margin: "30px"}}> <input type="text" value={this.state.value} onChange={this.onChange} placeholder="Search" style={{height:"28px",width:"400px", fontSize:"25px"}} /> <button style={{fontSize:"28px"}} onClick={this.onClick}>Load</button> </center>
-                <MyComponent address={this.state.address || 'india'} options={{draggable: false, zoomControl: false, scrollwheel: false, disableDoubleClickZoom: true, zoom: 6, showMarker: true}}/>
+                <MyComponent address={this.state.address || 'india'} options={{draggable: false, zoomControl: false, scrollwheel: false, disableDoubleClickZoom: true, zoom: 6, showMarker: true,markerIcon: 'https://storage.googleapis.com/branddesignmanager/CWANewDesign/images/icons/map-pointer-m.png' }}/>
             </div>
         )
     }

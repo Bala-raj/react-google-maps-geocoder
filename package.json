@@ -1,6 +1,6 @@
 {
   "name": "react-google-maps-geocoder",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "scripts": {
     "build": "webpack --config webpack.config.babel.js",
     "release": "webpack --p --config webpack.config.babel.js",
