@@ -12,12 +12,12 @@ class MyComponent extends Component {
 
   componentDidMount() {
     this.geocoder = new window.google.maps.Geocoder();
-    this.renderMap(this.props.address);
+    this.renderMap(this.props.location, this.props.address);
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.address != nextProps.address) {
-      this.renderMap(nextProps.address);
+      this.renderMap(nextProps.location, nextProps.address);
     }
   }
 
@@ -29,26 +29,7 @@ class MyComponent extends Component {
     if (status === window.google.maps.GeocoderStatus.OK) {
       this.setState({ isGeocodingError: false });
 
-      if (!this.map) {
-        const options = Object.assign({ center: results[0].geometry.location }, this.props.options)
-        this.map = new window.google.maps.Map(this.mapElement, options );
-        if(this.props.options.showMarker ) {          
-          this.marker = this.getMarker(results[0].geometry.location, this.props.options.markerIcon);
-          this.marker.setMap(this.map);
-        }
-      } else {
-        this.map.setCenter(results[0].geometry.location);
-        if(results[0].formatted_address.split(',').length > 2) {
-            this.map.setZoom(9);
-        } else {
-            this.map.setZoom(6);
-        }
-        if(this.props.options.showMarker ) {
-          this.marker.setMap(null);
-          this.marker = this.getMarker(results[0].geometry.location, this.props.options.markerIcon);
-          this.marker.setMap(this.map);
-        }        
-      }
+      this.setLocationOnMap(results[0].geometry.location, results[0].formatted_address);
 
       return;
     }
@@ -56,8 +37,35 @@ class MyComponent extends Component {
     this.setState({ isGeocodingError: true });
   }
 
-  renderMap(address) {
-    this.geocoder.geocode({ address: address }, this.handleResults.bind(this));
+  setLocationOnMap(location, address) {
+    if (!this.map) {
+      const options = Object.assign({ center: location }, this.props.options)
+      this.map = new window.google.maps.Map(this.mapElement, options);
+      if (this.props.options.showMarker) {
+        this.marker = this.getMarker(location, this.props.options.markerIcon);
+        this.marker.setMap(this.map);
+      }
+    } else {
+      this.map.setCenter(location);
+      if (address.split(',').length > 2) {
+        this.map.setZoom(9);
+      } else {
+        this.map.setZoom(6);
+      }
+      if (this.props.options.showMarker) {
+        this.marker.setMap(null);
+        this.marker = this.getMarker(location, this.props.options.markerIcon);
+        this.marker.setMap(this.map);
+      }
+    }
+  }
+
+  renderMap(location, address) {
+    if (location && location.lat && location.lng && address) {
+      this.setLocationOnMap(location, address)
+    } else {
+      this.geocoder.geocode({ address: address }, this.handleResults.bind(this));
+    }
   }
 
   render() {
@@ -71,6 +79,10 @@ class MyComponent extends Component {
 MyComponent.propTypes = {
   address: PropTypes.string.isRequired,
   options: PropTypes.object,
+  location: PropTypes.shape({
+    lat: PropTypes.number,
+    lng: PropTypes.number,
+  }),
 };
 
 export default MyComponent;
